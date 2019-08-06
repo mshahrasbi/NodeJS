@@ -4,7 +4,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     database: 'node-complete',
-    password: '!!!!!!!!!!!!!!!!!!!!!!!'
+    password: 'Majeedsh100!'
 });
 
 // we can now export this pool and it will export it in a special way, promise() here

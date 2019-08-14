@@ -8,6 +8,10 @@ const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 
 const app = express();
@@ -30,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // we can simply add new field to our request object. This user from DB is not
 // JS object it is Sequelize object 
 app.use((req, res, next) => {
-    User.findByPk(4)
+    User.findByPk(3)
         .then(
             user => {
                 req.user = user;
@@ -51,6 +55,15 @@ Product.belongsTo(User, {
 });
 User.hasMany(Product);
 
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
+
+
 // it will sync our models to the database by
 // creating the appropriate tables and relations
 // Note: force: true  only on developement
@@ -59,7 +72,7 @@ sequelize
     .sync()
     .then(result => {
         // console.log(result);
-        User.findByPk(4)
+        User.findByPk(3)
             .then( user => {
                 if (!user) {
                     return User.create({
@@ -71,6 +84,9 @@ sequelize
                 }
             })
             .then( user => {
+                return user.createCart();
+            })
+            .then(cart => {
                 console.log('Server started at port 3000 ...');
                 app.listen(3000);
             })

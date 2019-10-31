@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 
+const session = require("express-session");
+
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
@@ -17,18 +19,27 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'my secert',
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use((req, res, next) => {
     User.findById("5d81789548b5f013380e1090")
         .then(
             user => {
-                req.user = user;    // the user is full mongoose model
+                req.user = user; // the user is full mongoose model
                 next();
             }
         )
-        .catch( err => { console.log(err); });
+        .catch(err => {
+            console.log(err);
+        });
 });
 
 app.use('/admin', adminRoutes);
@@ -38,13 +49,13 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-    .connect('mongodb+srv://mshahrasbi:!!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority')
+    .connect('mongodb+srv://mshahrasbi:!!!!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority')
     .then(result => {
-        User.findOne().then( user => {
+        User.findOne().then(user => {
             if (!user) {
                 // create a user here before we start listening
                 const user = new User({
-                    name: 'Moh', 
+                    name: 'Moh',
                     email: 'moh@email.com',
                     cart: {
                         items: []
@@ -55,6 +66,6 @@ mongoose
         });
         app.listen(3000);
     })
-    .catch( err => {
+    .catch(err => {
         console.log(err)
     });

@@ -38,7 +38,7 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-    .connect('mongodb+srv://mshahrasbi:!!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority')
+    .connect('mongodb+srv://mshahrasbi:!!!!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority')
     .then(result => {
         User.findOne().then( user => {
             if (!user) {

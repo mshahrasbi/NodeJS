@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb+srv://mshahrasbi:!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://mshahrasbi:!!!!!!!!!!!@mycluster-l8bwl.mongodb.net/shop?retryWrites=true&w=majority';
                      //mongodb+srv://mshahrasbi:<password>@mycluster-l8bwl.mongodb.net/test?retryWrites=true&w=majority
 
 const app = express();

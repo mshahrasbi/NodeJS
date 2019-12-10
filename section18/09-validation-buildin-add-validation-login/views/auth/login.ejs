@@ -12,14 +12,14 @@
                 <%= errorMessage %>
             </div>
         <% } %>
-        <form class="login-form" action="/signup" method="POST" novalidate>
+        <form class="login-form" action="/login" method="POST">
             <div class="form-control">
                 <label for="email">E-Mail</label>
-                <input
+                <input 
                     class="<%= ValidationErrors.find(err => err.param === 'email') ? 'invalid' : '' %>" 
                     type="email" 
                     name="email" 
-                    id="email" 
+                    id="email"
                     value="<%= oldInput.email %>">
             </div>
             <div class="form-control">
@@ -28,20 +28,14 @@
                     class="<%= ValidationErrors.find(err => err.param === 'password') ? 'invalid' : '' %>" 
                     type="password" 
                     name="password" 
-                    id="password" 
+                    id="password"
                     value="<%= oldInput.password %>">
             </div>
-            <div class="form-control">
-                <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    class="<%= ValidationErrors.find(err => err.param === 'confirmPassword') ? 'invalid' : '' %>" 
-                    type="password" 
-                    name="confirmPassword" 
-                    id="confirmPassword" 
-                    value="<%= oldInput.confirmPassword %>">
-            </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit">Singup</button>
+            <button class="btn" type="submit">Login</button>
         </form>
+        <div class="centered">
+            <a href="/reset">Reset Password</a>
+        </div>
     </main>
 <%- include('../includes/end.ejs') %>

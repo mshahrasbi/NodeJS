@@ -31,7 +31,7 @@ app.use((error, req, res, next) => {
     res.status(status).json({ message: message });
 });
 
-mongoose.connect('mongodb+srv://mshahrasbi:Majeedsh100@mycluster-l8bwl.mongodb.net/messages?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://mshahrasbi:????????????????@mycluster-l8bwl.mongodb.net/messages?retryWrites=true&w=majority')
     .then( result => {
         app.listen(8080);
     })

@@ -1,6 +1,7 @@
 
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -27,6 +28,8 @@ module.exports = {
         console.log(errors);
         if (errors.length > 0) {
             const error = new Error('Invalid Inputs.');
+            error.data = errors;
+            error.code = 422;
             throw error;
         }
 
@@ -53,5 +56,28 @@ module.exports = {
             ...createdUser._doc,
             _id: createdUser._id.toString()
         }
+    },
+
+    login: async function({email, password}) {
+        const user = await User.findOne({email: email});
+        if (!user) {
+            const error = new Error('Invalid email address!');
+            error.code = 401;
+            throw error;
+        }
+
+        const isEqual = await bcrypt.compare(password, user.password);
+        if (!isEqual) {
+            const error = new Error('Incorrect password!');
+            error.code = 401;
+            throw error;
+        }
+
+        const token = jwt.sign({
+            userId: user._id.toString(),
+            email: user.email
+        }, 'somesupersecret', { expiresIn: '1h'});
+
+        return { token: token, userId: user._id.toString() };
     }
 }

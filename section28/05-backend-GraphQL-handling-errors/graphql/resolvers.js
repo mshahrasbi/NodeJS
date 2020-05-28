@@ -27,6 +27,8 @@ module.exports = {
         console.log(errors);
         if (errors.length > 0) {
             const error = new Error('Invalid Inputs.');
+            error.data = errors;
+            error.code = 422;
             throw error;
         }
 

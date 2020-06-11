@@ -89,15 +89,17 @@ module.exports = {
             throw error;
         }
 
-        console.log(postInput);
+        console.log('[createPost] postInput: ' , postInput);
+        console.log('[createPost] postInput.title: ' , postInput.title);
+        console.log('[createPost] postInput.content: ' , postInput.content);
 
         const errors = [];
 
-        if (validator.isEmpty(postInput.title) || validator.isLength(postInput.title, { min: 5 })){
+        if (validator.isEmpty(postInput.title) || !validator.isLength(postInput.title, { min: 5 })){
             errors.push({ message: 'Title is invalid.'});
         }
 
-        if (validator.isEmpty(postInput.content) || validator.isLength(postInput.content, { min: 5 })){
+        if (validator.isEmpty(postInput.content) || !validator.isLength(postInput.content, { min: 5 })){
             errors.push({ message: 'Content is invalid.'});
         }
 
@@ -125,7 +127,11 @@ module.exports = {
         
         const createdPost = await post.save();
         user.posts.push(createdPost);
-
+        /*
+            User does not have the post added to his posts array, the reason for that is that we do push the post but there is one important
+            steps need to be done as well, we need to save that change.
+        */
+        await user.save();
         return {...createdPost._doc, _id: createdPost._id.toString(), createdAt: createdPost.createdAt.toISOString(), updatedAt: createdPost.updatedAt.toISOString() }
     }
 }
